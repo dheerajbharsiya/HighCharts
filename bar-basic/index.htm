@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Highcharts Example</title>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <style type="text/css">
+        /*$ {
+            demo.css 
+        }
+        css related to graph*/
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            // var chart = $('#container').highcharts({  Could also be used, but will have to struggle for chart object
+            var chart = Highcharts.chart('container', {
+                accessibility: {
+                    keyboardNavigation: {
+                        skipNullPoints: true
+                    },
+                    pointDescriptionFormatter: function (point) {
+                        return point.category + ', low ' + point.low + ', median ' + point.median + ', high ' + point.high;
+                    },
+                    seriesDescriptionFormatter: function (series) {
+                        return series.name + ', series ' + (series.index + 1) + ' of ' + series.chart.series.length + ' with ' + series.points.length + ' data points.';
+                    }
+                },
+                chart: {
+                    type: 'column',// for horizontal bars use, bar as type
+                    events: {
+                        click: function (event) {
+                            console.log(event); // load, redraw, selection events are also available
+                        },
+                        load: function () { // load event will trigger when the chart is loaded ...
+                            var label = this.renderer.label('Chart loaded', 100, 120)
+                                .attr({
+                                    fill: Highcharts.getOptions().colors[0],
+                                    padding: 10,
+                                    r: 5,
+                                    zIndex: 8
+                                })
+                                .css({
+                                    color: '#FFFFFF'
+                                })
+                                .add();
+
+                            setTimeout(function () {
+                                label.fadeOut();
+                            }, 1000);
+                        }
+                    }
+                },
+                title: {
+                    text: 'Historic World Population by Region'
+                },
+                subtitle: {
+                    text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+                },
+                //here categories is equal to x axis label
+                xAxis: {
+                    categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'], // Chart without categories, falls back to numbers'
+                    title: {
+                        text: "x axis title"
+                    },
+                    crosshair: true, // it shows a vertical or horizontal line based on axis
+                    labels: {
+                        align: 'right', // how labes are aligned with respect to the axis                    }
+                        autoRotation: false, // it won't let labels to rotate even in small glass
+                        // rotation: 20, to rotate to labels
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Population (millions)',
+                        align: 'low' //can be middle and high as well
+                    },
+                    labels: {
+                        enabled: true, //by default it's true... we can set it false for hiding labels
+                        overflow: 'justify',
+                        //Formatter can be used to modify label
+                        // formatter: function () {
+                        //     var label = this.axis.defaultLabelFormatter.call(this);
+
+                        //     // Use thousands separator for four-digit numbers too
+                        //     if (/^[0-9]{4}$/.test(label)) {
+                        //         return Highcharts.numberFormat(this.value, 0);
+                        //     }
+                        //     label = label + 'demoLabel';
+                        //     return label;
+                        // }
+
+                        // step prop
+                        step: 2, // we can ensure that all our labels are viisbale by setting it to 1
+                        style: {
+                            color: 'red'
+                        }
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' millions',
+                    backgroundColor: null,
+                    borderWidth: 1,
+                    shadow: false,
+                    useHTML: true,
+                    style: {
+                        padding: 0
+                    }
+                },
+                plotOptions: {  // plotOptions can be given for specific type and all the series as well... like below
+                    series: {
+                        dataLabels: { // rotation, color, className..etc properties can be used
+                            enabled: true
+                        }
+                    }
+                    // bar: {
+                    //     dataLabels: {
+                    //         enabled: true
+                    //     }
+                    // }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -60,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                    shadow: true
+                },
+                credits: {
+                    enabled: true,
+                    text: 'dheeraj.bharsiyaUI.com'
+                },
+                series: [{
+                    name: 'Year 1800', //this name is shown in tooltip or legend... using point.name
+                    data: [107, 31, 635, 203, 2] // there are multiple ways of providing data..which are explained in highchart.com
+                }, {
+                    name: 'Year 1900',
+                    data: [133, 156, 947, 408, 6]
+                }, {
+                    name: 'Year 2012',
+                    data: [1052, 954, 4250, 740, 38]
+                }]
+            });
+            // the button action
+            $('#button').click(function () {
+                chart.series[0].setData([129.2, 144.0, 176.0, 135.6]);
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+    <button type="button" id="button">Click</button>
+
+</body>
+
+</html>
