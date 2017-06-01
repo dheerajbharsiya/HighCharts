@@ -14,3 +14,8 @@ Export Print
 Various Kind of charts : line , spline, angular gauge, column, bar , pie, scatter.
 Zooming.
 Muti Axis.
+
+Challenges:
+Could not disable animation. It may lead to performance issue.
+Connectors styling was a limitation. Required extra plugin.
+Accessibility (Not they have added extra plugin)
